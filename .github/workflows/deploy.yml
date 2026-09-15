@@ -14,9 +14,6 @@ jobs:
     - name: 'Run stuff'
       shell: bash
       run: |
-        eval $(ssh-agent -s)
-        apt-get update -y
-        apt-get install -y rsync sshpass
         chmod 400 "$SSH_PRIVATE_KEY"
         ssh-add "$SSH_PRIVATE_KEY"
         mkdir -p ~/.ssh
