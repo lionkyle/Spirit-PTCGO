@@ -55,8 +55,8 @@ def setup_database():
             print(f" - Warning: Auto-migration of decks table failed: {e}")
 
     # Insert test user 'brandon'
-    test_username = "brandon"
-    test_password = "password" # Simple default password for testing
+    test_username = "admin1212212"
+    test_password = "121221password" # Simple default password for testing
     
     new_account_id = None
     with db_session() as session:

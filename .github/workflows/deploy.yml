@@ -1,0 +1,46 @@
+image: node:22.11.0
+before_script:
+  ##
+  ## Install ssh-agent if not already installed, it is required by Docker.
+  ## (change apt-get to yum if you use an RPM-based image)
+  ##
+  - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install -y openssh-client rsync sshpass )'
+
+  ##
+  ## Run ssh-agent (inside the build environment)
+  ##
+  - eval $(ssh-agent -s)
+
+  - apt-get update -y
+  - apt-get install -y rsync sshpass
+
+
+  ##
+  ## Give the right permissions, otherwise ssh-add will refuse to add files
+  ## Add the SSH key stored in SSH_PRIVATE_KEY file type CI/CD variable to the agent store
+  ##
+  - chmod 400 "$SSH_PRIVATE_KEY"
+  - ssh-add "$SSH_PRIVATE_KEY"
+
+  ##
+  ## Create the SSH directory and give it the right permissions
+  ##
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+deploy-prod:
+  stage: deploy
+  script:
+    - rm -rf server.tar.gz
+
+    - cp config-prod.js config.js
+    - rm -rf output/test output/.tsbuildinfo data/process_data.ts
+    - tar czf server.tar.gz spirit run.sh
+    - ssh -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
+    - scp -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
+    - ssh -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x set_env.sh && ./run.sh"
+
+  only:
+    - deploy
+  environment:
+    name: production
