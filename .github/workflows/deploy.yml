@@ -8,20 +8,21 @@ jobs:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     environment: production
+    env:
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v4
     - name: 'Run stuff'
       shell: bash
       run: |
-        chmod 400 "$SSH_PRIVATE_KEY"
-        ssh-add "$SSH_PRIVATE_KEY"
         mkdir -p ~/.ssh
-        chmod 700 ~/.ssh
+        echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
+        chmod 600 ~/.ssh/deploy_key
         rm -rf server.tar.gz
         cp config-prod.js config.js
         rm -rf output/test output/.tsbuildinfo data/process_data.ts
         tar czf server.tar.gz spirit run.sh
-        ssh -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
-        scp -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
-        ssh -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x set_env.sh && ./run.sh"
+        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
+        scp -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
+        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x set_env.sh && ./run.sh"
