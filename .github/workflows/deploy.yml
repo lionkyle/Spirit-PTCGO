@@ -7,7 +7,7 @@ jobs:
     name: deploy-server
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    environment: dev
+    environment: production
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v4
