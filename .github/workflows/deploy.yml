@@ -24,4 +24,4 @@ jobs:
         tar czf server.tar.gz spirit run.sh
         ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
         scp -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
-        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x set_env.sh && ./run.sh"
+        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x run.sh && ./run.sh"
