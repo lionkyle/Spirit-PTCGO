@@ -5,7 +5,7 @@ on:
 jobs:
   deploy-server:
     name: deploy-server
-    timeout-minutes: 5
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -21,7 +21,7 @@ jobs:
         chmod 600 ~/.ssh/deploy_key
         rm -rf server.tar.gz
         rm -rf output/test output/.tsbuildinfo data/process_data.ts
-        tar czf server.tar.gz spirit run.sh
+        tar czf server.tar.gz spirit run.sh requirements.txt
         ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
         scp -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
         ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x run.sh && ./run.sh"
