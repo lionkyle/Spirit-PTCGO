@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     env:
-    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@v4
