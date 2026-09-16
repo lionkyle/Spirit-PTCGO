@@ -24,4 +24,4 @@ jobs:
         tar czf server.tar.gz spirit run.sh requirements.txt re_tools
         ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
         scp -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
-        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x run.sh && sudo chown www-data:www-data /var/cache/spirit_assets && sudo nginx -t && sudo systemctl reload nginx && sudo SPIRIT_HTTP_PORT=8001 SPIRIT_PUBLIC_HOST=192.210.136.108 bash run.sh
+        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x run.sh && sudo chown www-data:www-data /var/cache/spirit_assets && sudo nginx -t && sudo systemctl reload nginx" && sudo SPIRIT_HTTP_PORT=8001 SPIRIT_PUBLIC_HOST=192.210.136.108 bash run.sh
