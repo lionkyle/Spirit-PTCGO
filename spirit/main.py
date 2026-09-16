@@ -23,6 +23,9 @@ def _configure_logging():
     root.handlers.clear()
     root.addHandler(logging.handlers.QueueHandler(log_queue))
     root.setLevel(getattr(logging, config.LOG_LEVEL, logging.INFO))
+    fh = logging.FileHandler('output.log')
+    fh.setLevel(logging.DEBUG)
+    root.addHandler(fh)
     return listener
 
 
