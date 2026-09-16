@@ -20,7 +20,6 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/deploy_key
         chmod 600 ~/.ssh/deploy_key
         rm -rf server.tar.gz
-        cp config-prod.js config.js
         rm -rf output/test output/.tsbuildinfo data/process_data.ts
         tar czf server.tar.gz spirit run.sh
         ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
