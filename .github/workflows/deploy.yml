@@ -21,7 +21,7 @@ jobs:
         chmod 600 ~/.ssh/deploy_key
         rm -rf server.tar.gz
         rm -rf output/test output/.tsbuildinfo data/process_data.ts
-        tar czf server.tar.gz spirit run.sh requirements.txt
+        tar czf server.tar.gz spirit run.sh requirements.txt re_tools
         ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "mkdir -p /apps/spirit"
         scp -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no server.tar.gz root@spirit.pokemontcg.app:/tmp
-        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x run.sh && sudo SPIRIT_HTTP_PORT=8001 SPIRIT_PUBLIC_HOST=YOUR_VPS_IP bash run.sh && sudo cp deploy/nginx-spirit.conf /etc/nginx/sites-available/spirit && sudo ln -s /etc/nginx/sites-available/spirit /etc/nginx/sites-enabled/ && sudo mkdir -p /var/cache/spirit_assets && sudo chown www-data:www-data /var/cache/spirit_assets && sudo nginx -t && sudo systemctl reload nginx"
+        ssh -i ~/.ssh/deploy_key -oStrictHostKeyChecking=no root@spirit.pokemontcg.app "cd /apps/spirit && tar xzf /tmp/server.tar.gz && chmod +x run.sh && sudo SPIRIT_HTTP_PORT=8001 SPIRIT_PUBLIC_HOST=192.210.136.108 bash run.sh && sudo cp deploy/nginx-spirit.conf /etc/nginx/sites-available/spirit && sudo ln -s /etc/nginx/sites-available/spirit /etc/nginx/sites-enabled/ && sudo mkdir -p /var/cache/spirit_assets && sudo chown www-data:www-data /var/cache/spirit_assets && sudo nginx -t && sudo systemctl reload nginx"
